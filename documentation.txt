@@ -1,0 +1,86 @@
+ADDRESS BOOK PROJECT – FUNCTION DOCUMENTATION
+
+main()
+1. The program starts by creating an address book and setting up a place to store in the structure the user's menu choice.
+2. It calls initialize() so any contacts saved earlier can be loaded.
+3. The menu is shown again and again until the user chooses to exit.
+4. After the user enters a choice, the program calls the function for that task create, search, edit, delete, list, save contacts or exit.
+5. If the user enters a number that is not on the menu, the program shows an error and asks again.
+
+initialize(AddressBook *addressBook)
+1. The function starts with the contact count set to zero.
+2. Then it will  open contacts.txt to read saved contacts in the file.
+3. If the file cannot be opened, an error is shown and the function returns.
+4. The function reads each saved name, phone number, and email into the address book.
+5. The contact count is increased as records are read, and the file is closed when loading is finished.
+
+createContact(AddressBook *addressBook)
+1. The function first checks whether the address book has room for another contact. If it is full, it tells the user and stops.
+2. Then it asks for a name. The name must pass validname() and must not already belong to another contact. The user gets up to three tries.
+3. Then it then asks for a phone number. The number must pass validphone() and must not already be in the address book. There are up to three tries for this field too.
+4. Next, it asks for an email. The email must pass validemail() and must not be a duplicate. The user has up to three tries.
+5. If a field is still invalid or already used after the allowed tries, the function stops without adding the contact.
+6. Once all three details are accepted, they are copied into the next free place in the contacts structure array.
+7. The contact count is increased and a message confirms that the contact was created.
+
+searchContact(AddressBook *addressBook)
+1. If the address book is empty, the function displays a message and returns to the menu.
+2. The user chooses whether to search by name, phone number, or email.
+3. The function reads the search text for the selected field.
+4. It checks each contact for a case-insensitive partial match. For example, the search text can match part of a name or email.
+5. Any matching contacts are shown in a table, numbered in the order they are displayed.
+6. If nothing matches, the function says the contact was not found. An invalid search option is also reported.
+
+editContact(AddressBook *addressBook)
+1. The function checks for an empty address book first and returns if there are no contacts.
+2. The user chooses whether to find a contact by name, phone number, or email, then enters the search text.
+3. The function looks for partial matches without distinguishing uppercase and lowercase letters, and displays the matches in a table.
+4. If there are no matches, it reports that and stops. Otherwise, the user enters the serial number of the contact to edit.
+5. After checking that the serial number is valid, the function asks which detail should be changed: name, phone number, or email.
+6. The user enters the new details. It must pass the matching validation function and must not be used by another contact.
+7. The user can try up to three times to enter an acceptable value. When one is accepted, it replaces the old detail and the function confirms the edit.
+8. If the user selects an option that is not available, the function displays an error.
+
+deleteContact(AddressBook *addressBook)
+1. If the address book is empty, the function displays a message and returns.
+2. The user chooses to search by name, phone number, or email, then enters the search text.
+3. The function finds partial matches without distinguishing uppercase and lowercase letters and displays them in a table.
+4. If no contacts match, it reports that and stops. Otherwise, the user chooses the contact using its displayed serial number.
+5. The selected contact is shown again, and the user is asked to confirm the deletion by entering Y or cancel with N.
+6. When deletion is confirmed, the contacts after that entry are moved up one position and the contact count is reduced by one.
+7. If the user cancels or enters a different confirmation character, the contact is left in the address book and a message is displayed.
+
+listContacts(AddressBook *addressBook)
+1. If there are no contacts, the function says the address book is empty and stops.
+2. Otherwise, it prints headings for the serial number, name, phone number, and email.
+3. It goes through the contacts one by one and prints each in a row.
+4. The serial number starts at 1 and increases for each contact.
+
+saveContactsToFile(AddressBook *addressBook)
+1. The function opens contacts.txt in write mode. This replaces the file's previous contents.
+2. If the file cannot be opened, it displays an error and returns.
+3. Each contact is written to the file on its own line, with the name, phone number, and email separated by commas.
+4. The file is closed and a message confirms that the contacts were saved.
+
+Exit(AddressBook *addressBook)
+1. This function ends the program by calling exit(0).
+
+validname(char name[])
+1. The function rejects a name that is empty or starts with a space.
+2. It checks each character in the name.
+3. Only English letters and spaces are accepted. If another character is found, the function displays a message and returns 0.
+4. If every character is allowed, it returns 1.
+
+validphone(char phone[])
+1. The function rejects a phone number that is empty or starts with a space.
+2. It checks that the phone number has exactly ten characters.
+3. It then checks that every character is a digit. Spaces and other characters are not allowed.
+4. If all checks pass, it returns 1; otherwise, it displays a message and returns 0.
+
+validemail(char email[])
+1. The function rejects an email that is empty or starts with a space.
+2. It checks that the email contains no uppercase letters and counts the @ symbols.
+3. There must be exactly one @, and it cannot be the first or last character.
+4. Only lowercase letters, digits, @ symbols, and periods are allowed.
+5. The email must contain .com, and .com must appear at the end.
+6. If all the checks pass, the function returns 1. If a check fails, it displays the reason and returns 0.
